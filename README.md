@@ -1,6 +1,6 @@
 # Image Trail Shader
 
-An advanced trail shader implementation built with React Three Fiber and WebGL post-processing to create visual persistence effects.
+Trail shader implementation built with React Three Fiber and WebGL post-processing to create visual persistence effects.
 
 ## How It Works
 
