@@ -26,52 +26,11 @@ export const PostProcessing = () => {
   const {
     trailEnabled,
     trailAmount,
-    trailResolutionScale,
-    trailBlendFunction
+    trailResolutionScale
   } = useControls('Post Processing/Persistence', {
     trailEnabled: { value: true, label: 'Enable Trail' },
-    trailAmount: { value: 80, min: 50, max: 99.9, step: 0.01, label: 'Trail Amount' },
+    trailAmount: { value: 80, min: 1.0, max: 199.9, step: 0.01, label: 'Decay Speed' },
     trailResolutionScale: { value: 0.5, min: 0.01, max: 1.0, step: 0.01, label: 'Resolution Scale' },
-    trailBlendFunction: {
-      value: BlendFunction.SCREEN,
-      options: {
-        SKIP: BlendFunction.SKIP,
-        ADD: BlendFunction.ADD,
-        ALPHA: BlendFunction.ALPHA,
-        AVERAGE: BlendFunction.AVERAGE,
-        COLOR: BlendFunction.COLOR,
-        COLOR_BURN: BlendFunction.COLOR_BURN,
-        COLOR_DODGE: BlendFunction.COLOR_DODGE,
-        DARKEN: BlendFunction.DARKEN,
-        DIFFERENCE: BlendFunction.DIFFERENCE,
-        DIVIDE: BlendFunction.DIVIDE,
-        DST: BlendFunction.DST,
-        EXCLUSION: BlendFunction.EXCLUSION,
-        HARD_LIGHT: BlendFunction.HARD_LIGHT,
-        HARD_MIX: BlendFunction.HARD_MIX,
-        HUE: BlendFunction.HUE,
-        INVERT: BlendFunction.INVERT,
-        INVERT_RGB: BlendFunction.INVERT_RGB,
-        LIGHTEN: BlendFunction.LIGHTEN,
-        LINEAR_BURN: BlendFunction.LINEAR_BURN,
-        LINEAR_DODGE: BlendFunction.LINEAR_DODGE,
-        LINEAR_LIGHT: BlendFunction.LINEAR_LIGHT,
-        LUMINOSITY: BlendFunction.LUMINOSITY,
-        MULTIPLY: BlendFunction.MULTIPLY,
-        NEGATION: BlendFunction.NEGATION,
-        NORMAL: BlendFunction.NORMAL,
-        OVERLAY: BlendFunction.OVERLAY,
-        PIN_LIGHT: BlendFunction.PIN_LIGHT,
-        REFLECT: BlendFunction.REFLECT,
-        SATURATION: BlendFunction.SATURATION,
-        SCREEN: BlendFunction.SCREEN,
-        SOFT_LIGHT: BlendFunction.SOFT_LIGHT,
-        SRC: BlendFunction.SRC,
-        SUBTRACT: BlendFunction.SUBTRACT,
-        VIVID_LIGHT: BlendFunction.VIVID_LIGHT
-      },
-      label: 'Blend Function',
-    }
   }, { collapsed: true });
 
   // Handle window resize
@@ -100,9 +59,9 @@ export const PostProcessing = () => {
   // Update trail effect options when they change
   useEffect(() => {
     if (trailEffectRef.current) {
-      trailEffectRef.current.updateOptions(trailAmount, trailEnabled, trailResolutionScale, trailBlendFunction);
+      trailEffectRef.current.updateOptions(trailAmount, trailEnabled, trailResolutionScale);
     }
-  }, [trailAmount, trailEnabled, trailResolutionScale, trailBlendFunction]);
+  }, [trailAmount, trailEnabled, trailResolutionScale]);
 
 
   // Configure post-processing effects
@@ -120,7 +79,7 @@ export const PostProcessing = () => {
       trailAmount,
       trailEnabled,
       resolutionScale: trailResolutionScale,
-      blendFunction: trailBlendFunction
+      blendFunction: BlendFunction.NORMAL
     });
     trailEffectRef.current = cloneEffect;
     composer.addPass(new EffectPass(camera, cloneEffect));
@@ -129,7 +88,7 @@ export const PostProcessing = () => {
   }, [
     composerRef.current,
     scene, camera,
-    trailEnabled, trailAmount, trailResolutionScale, trailBlendFunction,
+    trailEnabled, trailAmount, trailResolutionScale,
 
   ]);
 

@@ -149,9 +149,7 @@ export default function App(): JSX.Element {
         <MovingBall color="#FF69B4" position={[-1, 1, -2]} />
         <MovingBall color="#00CED1" position={[2, 1, 1]} />
         <MovingBall color="#FF6347" position={[-2, -1, -1]} />
-        <MovingBall color="#32CD32" position={[1, 2, 1]} />
-        <MovingBall color="#FF1493" position={[-1, -2, -1]} />
-        <MovingBall color="#00FF00" position={[0, 0, 0]} />
+
         <OrbitControls />
         {/* <Perf position='bottom-right' /> */}
         <PostProcessing />
@@ -164,19 +162,27 @@ export default function App(): JSX.Element {
 /**
  * Moving ball component with random motion
  */
+/**
+ * Moving ball component with random motion, frame-rate independent
+ */
 function MovingBall({ color, position }: { color: string, position: [number, number, number] }): JSX.Element {
   const meshRef = useRef<THREE.Mesh>(null);
+  // Velocity in units per second
   const velocityRef = useRef<THREE.Vector3>(new THREE.Vector3(
-    (Math.random() - 0.5) * 0.1,
-    (Math.random() - 0.5) * 0.1,
+    (Math.random() - 0.5) * 2, // random speed, tuned for visible motion
+    (Math.random() - 0.5) * 2,
     0
   ));
 
-  useFrame(() => {
+  // Store last frame time to compute delta
+  const lastTimeRef = useRef<number | null>(null);
+
+  useFrame((_, delta) => {
     if (!meshRef.current) return;
 
-    // Update position
-    meshRef.current.position.add(velocityRef.current);
+    // delta è in secondi, quindi la velocità è in unità/secondo
+    // Aggiorna la posizione in modo indipendente dal frame rate
+    meshRef.current.position.addScaledVector(velocityRef.current, delta * 10);
 
     // Check boundaries and bounce
     const bounds = 3;
@@ -189,11 +195,13 @@ function MovingBall({ color, position }: { color: string, position: [number, num
       meshRef.current.position.y = Math.sign(meshRef.current.position.y) * bounds;
     }
 
-    // Randomly change direction occasionally
-    if (Math.random() < 0.02) {
+    // Randomly change direction occasionally, probability adjusted for delta time
+    // 0.02 per frame at 60fps ≈ 1.2% per frame, so per second: 0.02 * 60 = 1.2
+    // Per rendere frame-rate indipendente: 0.02 * (delta * 60)
+    if (Math.random() < 0.02 * (delta * 60)) {
       velocityRef.current.set(
-        (Math.random() - 0.5) * 0.1,
-        (Math.random() - 0.5) * 0.1,
+        (Math.random() - 0.5) * 1.2,
+        (Math.random() - 0.5) * 1.2,
         0
       );
     }
@@ -201,8 +209,8 @@ function MovingBall({ color, position }: { color: string, position: [number, num
 
   return (
     <mesh ref={meshRef} position={position}>
-      <sphereGeometry args={[0.5, 10, 10]} />
+      <sphereGeometry args={[0.5, 12, 12]} />
       <meshStandardMaterial color={color} emissive={color} />
     </mesh>
   )
-} 
+}

@@ -20,27 +20,32 @@ const vertexShader = /*glsl*/`
     }
 `;
 
-// Fragment shader per l'effetto di trail
+// Fragment shader per l'effetto di trail con blending fisicamente più realistico
+// Utilizza un'esponenziale decrescente per simulare la persistenza reale della luce
 const fragmentShader = /*glsl*/`
     uniform sampler2D currentFrame;
     uniform sampler2D previousFrame;
     uniform float trailAmount;
     uniform bool trailEnabled;
     varying vec2 vUv;
-    
+
     void main() {
         vec4 current = texture2D(currentFrame, vUv);
-        
+
         if (trailEnabled) {
             vec4 previous = texture2D(previousFrame, vUv);
-            gl_FragColor = vec4(mix(current.rgb, previous.rgb, trailAmount), 1.0);
+            // trailAmount rappresenta la percentuale di persistenza (0.0 = nessuna, 1.0 = massima)
+            // Usiamo un decadimento esponenziale per simulare la dissolvenza reale
+            float decay = exp(-trailAmount * .2);
+            vec3 blended = mix(current.rgb, previous.rgb, decay);
+            gl_FragColor = vec4(blended, 1.0);
         } else {
             gl_FragColor = current;
         }
     }
 `;
 
-// Shader GLSL principale per l'effetto
+// Shader GLSL principale per l'effetto con blending esponenziale
 const mainImageShader = /*glsl*/`
     uniform sampler2D previousFrame;
     uniform sampler2D currentFrame;
@@ -49,10 +54,12 @@ const mainImageShader = /*glsl*/`
 
     void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
         vec4 current = texture2D(currentFrame, uv);
-        
+
         if (trailEnabled) {
             vec4 previous = texture2D(previousFrame, uv);
-            outputColor = vec4(mix(current.rgb, previous.rgb, trailAmount), 1.0);
+            float decay = exp(-trailAmount * .2);
+            vec3 blended = mix(current.rgb, previous.rgb, decay);
+            outputColor = vec4(blended, 1.0);
         } else {
             outputColor = current;
         }
