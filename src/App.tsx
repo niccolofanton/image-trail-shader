@@ -1,25 +1,63 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, FC } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import './styles.css';
-import { Perf } from 'r3f-perf';
 import { PostProcessing } from './trail-shader/post-processing';
+
+const DemoName: FC = () => (
+  <div style={{
+    position: 'fixed',
+    bottom: '16px',
+    left: '32px',
+    zIndex: 1000,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: '16px',
+    borderRadius: '8px',
+    backdropFilter: 'blur(4px)'
+  }}>
+    <div style={{
+      fontSize: '30px',
+      color: 'white',
+      pointerEvents: 'none',
+      fontWeight: 'bold',
+      fontFamily: 'Comfortaa, cursive'
+    }}>
+      Trail Postprocessing
+    </div>
+    <div style={{
+      fontSize: '16px',
+      color: 'white',
+      marginTop: '-5px',
+      letterSpacing: '1.2px',
+      fontFamily: 'Comfortaa, cursive'
+    }}>
+      made by <span style={{ textDecoration: 'underline' }}>
+        <a href="https://niccolofanton.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'underline' }}>niccolofanton</a>
+      </span>
+
+      {" • "}
+      <a href="https://github.com/niccolofanton/image-trail-shader" target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'underline' }}>GitHub</a>
+    </div>
+  </div>
+);
 
 /**
  * Component that handles camera updates on window resize
  */
 function CameraController(): null {
   const { camera } = useThree();
-  
+
   useEffect(() => {
     const handleResize = () => {
       if (camera instanceof THREE.OrthographicCamera) {
         const aspectRatio = window.innerWidth / window.innerHeight;
         const cameraHeight = 6; // Fixed height for consistent view
         const cameraWidth = cameraHeight * aspectRatio;
-        
+
         camera.left = -cameraWidth / 2;
         camera.right = cameraWidth / 2;
         camera.top = cameraHeight / 2;
@@ -29,10 +67,10 @@ function CameraController(): null {
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     // Set initial camera parameters
     handleResize();
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -59,7 +97,7 @@ export default function App(): JSX.Element {
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -74,7 +112,7 @@ export default function App(): JSX.Element {
     <div style={{ width: '100vw', height: '100vh' }}>
       <Canvas
         orthographic
-        camera={{ 
+        camera={{
           zoom: windowSize.width > 700 ? 0.45 : 0.3,
           position: [0, 0, 5],
           left: -cameraWidth / 2,
@@ -93,7 +131,7 @@ export default function App(): JSX.Element {
       >
         <CameraController />
         {/* <ambientLight intensity={0.5} /> */}
-        <pointLight position={[10, 10, 10]} />  
+        <pointLight position={[10, 10, 10]} />
         <MovingBall color="#FF1493" position={[1, 0, 1]} />
         <MovingBall color="#00FF00" position={[-1, 1, 0]} />
         <MovingBall color="#4169E1" position={[0, -1, -1]} />
@@ -115,9 +153,10 @@ export default function App(): JSX.Element {
         <MovingBall color="#FF1493" position={[-1, -2, -1]} />
         <MovingBall color="#00FF00" position={[0, 0, 0]} />
         <OrbitControls />
-        <Perf position='bottom-right' />
+        {/* <Perf position='bottom-right' /> */}
         <PostProcessing />
       </Canvas>
+      <DemoName />
     </div>
   )
 }
