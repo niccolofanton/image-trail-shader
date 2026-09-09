@@ -2,6 +2,8 @@
 
 # Image Trail Shader
 
+![Image Trail Shader](docs/preview.gif)
+
 Real-time WebGL trail / visual-persistence post-processing effect built with React Three Fiber.
 
 [![GitHub stars](https://img.shields.io/github/stars/niccolofanton/image-trail-shader?style=for-the-badge)](https://github.com/niccolofanton/image-trail-shader/stargazers)
