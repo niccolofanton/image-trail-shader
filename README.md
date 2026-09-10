@@ -154,6 +154,16 @@ The `TrailEffect` accepts any `BlendFunction` from the postprocessing library, f
 - **MULTIPLY**: Darkens, useful for shadow-like trails
 - **OVERLAY**: Combines multiply and screen for balanced results
 
+## Credits
+
+The trail effect, the demo scene and the shader in this repository are original work. It builds on the following open-source projects:
+
+- [three.js](https://threejs.org/) — WebGL engine (MIT, © three.js authors).
+- [postprocessing](https://github.com/pmndrs/postprocessing) — the `Effect` base class and `EffectComposer` this effect plugs into (Zlib, © Raoul van Rüschen).
+- [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) and [@react-three/drei](https://github.com/pmndrs/drei) — React renderer and helpers (MIT, © react-spring / Poimandres).
+- [Leva](https://github.com/pmndrs/leva) — real-time control panel (MIT, © Poimandres).
+- [Comfortaa](https://fonts.google.com/specimen/Comfortaa) — font used in the demo overlay, loaded from Google Fonts ([SIL Open Font License 1.1](https://openfontlicense.org/)).
+
 ## License
 
-`package.json` declares the project as MIT-licensed. Note that no separate `LICENSE` file is currently included in the repository.
+[MIT](./LICENSE) © Niccolò Fanton.
