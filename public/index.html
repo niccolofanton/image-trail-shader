@@ -4,22 +4,94 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Image Trail | Niccolò Fanton</title>
-	<meta name="description" content="A image trail shader implementation with React Three Fiber demonstrating post-processing effects." />
-	<meta name="keywords" content="image trail, shader, three.js, react, webgl, post-processing" />
+	<title>Image Trail — WebGL visual-persistence effect</title>
+	<meta name="description"
+		content="A real-time WebGL image trail: a feedback post-processing pass that blends each rendered frame into the next, built with React Three Fiber and Three.js." />
+	<meta name="keywords" content="image trail, visual persistence, shader, three.js, react three fiber, webgl, post-processing" />
 	<meta name="author" content="Niccolò Fanton" />
-	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="author" href="https://niccolofanton.dev">
+	<link rel="canonical" href="https://trail.niccolofanton.dev/">
+	<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+	<meta name="theme-color" content="#000000">
+
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Niccolò Fanton">
+	<meta property="og:url" content="https://trail.niccolofanton.dev/">
+	<meta property="og:title" content="Image Trail — WebGL visual-persistence effect">
+	<meta property="og:description"
+		content="A real-time WebGL image trail: a feedback post-processing pass that blends each rendered frame into the next, built with React Three Fiber and Three.js.">
+	<meta property="og:image" content="https://trail.niccolofanton.dev/og.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Coloured spheres smearing into glowing trails on a black background">
+
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Image Trail — WebGL visual-persistence effect">
+	<meta name="twitter:description"
+		content="A real-time WebGL image trail: a feedback post-processing pass that blends each rendered frame into the next, built with React Three Fiber and Three.js.">
+	<meta name="twitter:image" content="https://trail.niccolofanton.dev/og.png">
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
 	<script>document.documentElement.className = "js";</script>
 
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		"name": "Image Trail",
+		"description": "A real-time WebGL image trail: a feedback post-processing pass that blends each rendered frame into the next, built with React Three Fiber and Three.js.",
+		"url": "https://trail.niccolofanton.dev/",
+		"image": "https://trail.niccolofanton.dev/og.png",
+		"applicationCategory": "MultimediaApplication",
+		"operatingSystem": "Any browser with WebGL 2",
+		"codeRepository": "https://github.com/niccolofanton/image-trail-shader",
+		"author": {
+			"@type": "Person",
+			"name": "Niccolò Fanton",
+			"url": "https://niccolofanton.dev",
+			"sameAs": ["https://github.com/niccolofanton"]
+		}
+	}
+	</script>
+
+	<style>
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			white-space: nowrap;
+			border: 0;
+		}
+	</style>
 </head>
 
 <body class="demo-1">
 	<noscript>You need to enable JavaScript to run this app.</noscript>
 	<main>
 		<div id="root"></div>
+
+		<section class="sr-only">
+			<h1>Image Trail — WebGL visual-persistence effect</h1>
+			<p>
+				An orthographic Three.js scene of emissive spheres rendered through a custom trail pass:
+				instead of clearing the buffer every frame, the effect keeps the previous render target and
+				mixes the new frame into it with a decay factor, so each moving ball leaves a fading smear
+				behind it. Drag to orbit the camera. Built with React Three Fiber, Three.js and the
+				<code>postprocessing</code> library; the shader lives in
+				<a href="https://github.com/niccolofanton/image-trail-shader">the image-trail-shader repository on GitHub</a>.
+			</p>
+			<p>
+				Made by <a href="https://niccolofanton.dev">Niccolò Fanton</a>.
+				Browse <a href="https://demos.niccolofanton.dev">all WebGL demos on the demo hub</a>.
+			</p>
+		</section>
 	</main>
 
 </body>
